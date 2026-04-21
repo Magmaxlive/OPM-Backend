@@ -13,7 +13,7 @@ class Blogs_view(generics.ListAPIView):
     pagination_class = BlogPagination
 
     def get_queryset(self):
-        return Blog.objects.filter(is_published=True)
+        return Blog.objects.filter(status='published')
 
     def get_serializer_context(self):
         return {'request': self.request}

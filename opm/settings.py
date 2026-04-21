@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     'api',
     'ckeditor',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'admin_api',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -120,14 +122,41 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 NEXTJS_URL = os.environ.get('NEXTJS_URL')
 REVALIDATION_SECRET = os.environ.get('REVALIDATION_SECRET')
 
+AUTHENTICATION_BACKENDS = ['admin_api.backends.EmailOrUsernameBackend']
+
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'admin_api.authentication.CookieJWTAuthentication',  
+    ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',  
+        'rest_framework.parsers.FormParser',  
+    ],
+}
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'accept',
+]
+
+
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME':  timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 # smtp
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
