@@ -6,9 +6,10 @@ urlpatterns = [
     path('blogs/<int:pk>/',Blogs_detail_view.as_view(),name='blog'),
     path('enquiries/',Enquiries_view.as_view(),name='enquiry'),
     path('enquiries/<int:pk>/',Enquiries_detail_view.as_view(),name='enquiry'),
-
-    # path('subscribe/',Subscriber_form_view.as_view(),name='subscribe'),
-    # path('rental_appraisal/',Rental_form_view.as_view(),name='rental_appraisal')
+    path('subscribers/',Subscribers_view.as_view(),name='subscribe'),
+    path('subscribers/<int:pk>/',Subscriber_detail_view.as_view(),name='subscribe'),
+    path('rental-appraisals/', Rental_view.as_view(), name='rental-appraisal'),
+    path('rental-appraisals/<int:pk>/', Rental_detail_view.as_view(), name='rental-appraisal-detail'),
 
 
     # auth

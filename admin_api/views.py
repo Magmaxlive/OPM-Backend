@@ -115,6 +115,23 @@ class Enquiries_detail_view(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
 
+class Rental_view(generics.ListAPIView):
+    serializer_class = Rental_serializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = Pagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['status', 'property_type']
+    search_fields = ['first_name', 'last_name', 'email', 'address']
+    queryset = Rental_form.objects.all()
+
+
+class Rental_detail_view(generics.RetrieveUpdateAPIView):
+    serializer_class = Rental_serializer
+    permission_classes = [IsAuthenticated]
+    queryset = Rental_form.objects.all()
+    lookup_field = 'pk'
+
+
 class Blogs_view(generics.ListCreateAPIView):
     serializer_class = Blog_serializer_admin
     permission_classes = [IsAuthenticated]
@@ -138,3 +155,18 @@ class Blogs_detail_view(generics.RetrieveUpdateDestroyAPIView):
 
     def get_serializer_context(self):
         return {'request': self.request}
+    
+
+class Subscribers_view(generics.ListAPIView):
+    serializer_class = Subscriber_serializer
+    queryset = Subscribers_Form.objects.all()
+    permission_classes = [IsAuthenticated]
+    pagination_class = Pagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['email']
+
+
+class Subscriber_detail_view(generics.RetrieveDestroyAPIView):
+    serializer_class = Subscriber_serializer
+    queryset = Subscribers_Form.objects.all()
+    lookup_field = 'pk'
