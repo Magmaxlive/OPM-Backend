@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        
+        <!-- Header -->
+        <div style="background: #004876; padding: 24px 20px; border-radius: 8px 8px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 20px;">New Rental Appraisal Received</h1>
+            <p style="color: #a8d5c2; margin: 6px 0 0; font-size: 13px;">Someone has submitted a rental appraisal from your website.</p>
+        </div>
+
+        <!-- Body -->
+        <div style="background: #f9f9f9; padding: 24px; border-radius: 0 0 8px 8px;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; background: white; border-radius: 8px;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">First Name</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ first_name }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Last Name</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ last_name }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Email</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ email }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Phone</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ phone }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Address</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ address }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Property Type</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ property_type }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Current Status</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333;">{{ current_status }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">No: of Bedrooms</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333; line-height: 1.6;">{{ bedrooms }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">No: of Bathrooms</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333; line-height: 1.6;">{{ bathrooms }}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Appraisal Date</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333; line-height: 1.6;">{{ appraisal_date }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #004876; background: #f0f7f5; width: 30%; text-transform: uppercase; letter-spacing: 0.5px;">Note</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #333; line-height: 1.6;">{{ note }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; font-size: 12px; color: #999; margin-top: 20px;">
+            This email was sent from your website rental appraisal form.
+        </div>
+    </div>
+</body>
+</html>

@@ -45,7 +45,7 @@ class Enquiry_form(models.Model):
     phone = models.CharField(max_length=50)
     subject = models.CharField(max_length=200)
     message = models.TextField()
-    status = models.CharField(choices=Status_Choices,max_length=50)
+    status = models.CharField(choices=Status_Choices,max_length=50,default='pending')
     submitted_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
