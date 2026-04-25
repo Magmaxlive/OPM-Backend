@@ -3,20 +3,16 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from decouple import config,Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-load_dotenv(BASE_DIR / 'opm' / '.env')
+SECRET_KEY = config('SECRET_KEY')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=Csv())
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-&sn+!i!gfy^3u12^bsbx)%1d=-hp+*j6p8mw$7tdeeqem+5)if')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
 
 
 # Application definition
@@ -34,6 +30,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'admin_api',
     'django_filters',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -118,9 +115,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # CORS
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-NEXTJS_URL = os.environ.get('NEXTJS_URL')
-REVALIDATION_SECRET = os.environ.get('REVALIDATION_SECRET')
+NEXTJS_URL = config('NEXTJS_URL')
+REVALIDATION_SECRET = config('REVALIDATION_SECRET')
 
 AUTHENTICATION_BACKENDS = ['admin_api.backends.EmailOrUsernameBackend']
 
@@ -161,8 +157,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')      
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-RECIEVER_EMAIL = os.environ.get('RECIEVER_EMAIL')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')      
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+RECIEVER_EMAIL = config('RECIEVER_EMAIL')
 
