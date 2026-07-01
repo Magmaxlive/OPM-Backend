@@ -14,7 +14,6 @@ from django.contrib.auth import update_session_auth_hash
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from rest_framework.exceptions import ValidationError
 
 DOMAIN = ".oaksproperty.co.nz"
 
@@ -48,7 +47,7 @@ def refresh_view(request):
     serializer = TokenRefreshSerializer(data={'refresh': refresh_token})
     try:
         serializer.is_valid(raise_exception=True)
-    except ValidationError:
+    except Exception:
         return Response({'error': 'Invalid refresh token'}, status=401)
 
     response = Response({'message': 'Token refreshed'})
@@ -71,21 +70,8 @@ def logout_view(request):
 
     response = Response({'message': 'Logged Out'})
 
-    response.delete_cookie(
-        key='access_token', 
-        path='/',
-        secure=True,
-        samesite='Lax',
-        domain=DOMAIN
-    )
-
-    response.delete_cookie(
-        key='refresh_token', 
-        path='/',
-        secure=True,
-        samesite='Lax',
-        domain=DOMAIN
-    )
+    response.delete_cookie(key='access_token', path='/', samesite='Lax', domain=DOMAIN)
+    response.delete_cookie(key='refresh_token', path='/', samesite='Lax', domain=DOMAIN)
     return response
 
 
