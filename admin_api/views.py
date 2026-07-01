@@ -17,6 +17,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.exceptions import ValidationError
 
+DOMAIN = "server.oaksproperty.co.nz"
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -32,8 +34,8 @@ def login_view(request):
     access = str(refresh.access_token)
 
     response = Response({'message': 'Login successful'})
-    response.set_cookie(key='access_token', value=access, httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/')
-    response.set_cookie(key='refresh_token', value=str(refresh), httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/')
+    response.set_cookie(key='access_token', value=access, httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/',domain=DOMAIN,)
+    response.set_cookie(key='refresh_token', value=str(refresh), httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/',domain=DOMAIN,)
     return response
 
 
@@ -51,9 +53,9 @@ def refresh_view(request):
         return Response({'error': 'Invalid refresh token'}, status=401)
 
     response = Response({'message': 'Token refreshed'})
-    response.set_cookie(key='access_token', value=serializer.validated_data['access'], httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/')
+    response.set_cookie(key='access_token', value=serializer.validated_data['access'], httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/',domain=DOMAIN,)
     if 'refresh' in serializer.validated_data:
-        response.set_cookie(key='refresh_token', value=serializer.validated_data['refresh'], httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/')
+        response.set_cookie(key='refresh_token', value=serializer.validated_data['refresh'], httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/',domain=DOMAIN,)
     return response
 
 

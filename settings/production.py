@@ -44,6 +44,11 @@ STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 
+SESSION_COOKIE_DOMAIN = 'server.oaksproperty.co.nz'
+CSRF_COOKIE_DOMAIN    = 'server.oaksproperty.co.nz'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
