@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from django.contrib.auth import update_session_auth_hash
@@ -67,8 +66,8 @@ def logout_view(request):
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
-        except TokenError:
-            pass  # Token is invalid or already blacklisted, ignore
+        except Exception:
+            pass  # Token invalid, already blacklisted, or DB error — ignore
 
     response = Response({'message': 'Logged Out'})
 
