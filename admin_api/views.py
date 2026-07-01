@@ -10,10 +10,12 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from django.contrib.auth import update_session_auth_hash
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.exceptions import ValidationError
 
 
 @api_view(['POST'])
@@ -30,8 +32,8 @@ def login_view(request):
     access = str(refresh.access_token)
 
     response = Response({'message': 'Login successful'})
-    response.set_cookie(key='access_token', value=access, httponly=True, secure=False, samesite='Lax', max_age=60*60, path='/')
-    response.set_cookie(key='refresh_token', value=str(refresh), httponly=True, secure=False, samesite='Lax', max_age=60*60*24*7, path='/')
+    response.set_cookie(key='access_token', value=access, httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/')
+    response.set_cookie(key='refresh_token', value=str(refresh), httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/')
     return response
 
 
@@ -41,21 +43,46 @@ def refresh_view(request):
     refresh_token = request.COOKIES.get('refresh_token')
     if not refresh_token:
         return Response({'error': 'No refresh token'}, status=401)
+
+    serializer = TokenRefreshSerializer(data={'refresh': refresh_token})
     try:
-        refresh = RefreshToken(refresh_token)
-        access = str(refresh.access_token)
-        response = Response({'message': 'Token refreshed'})
-        response.set_cookie(key='access_token', value=access, httponly=True, secure=False, samesite='Lax', max_age=60*60, path='/')
-        return response
-    except TokenError:
+        serializer.is_valid(raise_exception=True)
+    except ValidationError:
         return Response({'error': 'Invalid refresh token'}, status=401)
+
+    response = Response({'message': 'Token refreshed'})
+    response.set_cookie(key='access_token', value=serializer.validated_data['access'], httponly=True, secure=True, samesite='Lax', max_age=60*60, path='/')
+    if 'refresh' in serializer.validated_data:
+        response.set_cookie(key='refresh_token', value=serializer.validated_data['refresh'], httponly=True, secure=True, samesite='Lax', max_age=60*60*24*7, path='/')
+    return response
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def logout_view(request):
+    refresh_token = request.COOKIES.get('refresh_token')
+    if refresh_token:
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except TokenError:
+            pass  # Token is invalid or already blacklisted, ignore
+
     response = Response({'message': 'Logged Out'})
-    response.delete_cookie('access_token')
-    response.delete_cookie('refresh_token')
+
+    response.delete_cookie(
+        key='access_token', 
+        path='/',
+        secure=True,
+        samesite='Lax'
+    )
+
+    response.delete_cookie(
+        key='refresh_token', 
+        path='/',
+        secure=True,
+        samesite='Lax'
+    )
     return response
 
 
@@ -100,7 +127,7 @@ class Blog_Pagination(PageNumberPagination):
 
 class Enquiries_view(generics.ListAPIView):
     serializer_class = Enquiry_serializer
-    queryset = Enquiry_form.objects.all()
+    queryset = Enquiry_form.objects.all().order_by('-id')
     permission_classes = [IsAuthenticated]
     pagination_class = Pagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
@@ -122,7 +149,7 @@ class Rental_view(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['status', 'property_type']
     search_fields = ['first_name', 'last_name', 'email', 'address']
-    queryset = Rental_form.objects.all()
+    queryset = Rental_form.objects.all().order_by('-id')
 
 
 class Rental_detail_view(generics.RetrieveUpdateAPIView):
@@ -138,7 +165,7 @@ class Blogs_view(generics.ListCreateAPIView):
     pagination_class = Blog_Pagination
 
     def get_queryset(self):
-        qs = Blog.objects.all()
+        qs = Blog.objects.all().order_by('-id')
         status = self.request.query_params.get('status')
         if status:
             qs = qs.filter(status=status)

@@ -9,7 +9,7 @@ class Blog(models.Model):
     ]
 
     title        = models.CharField(max_length=255)
-    slug         = models.SlugField(unique=True, blank=True)
+    slug         = models.SlugField(unique=True, blank=True,max_length=255)
     content      = models.TextField()
     cover_image  = models.ImageField(upload_to='blogs/')
     author       = models.CharField(max_length=100, blank=True)
@@ -22,7 +22,7 @@ class Blog(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.title)
+            base_slug = slugify(self.title)[:240]
             slug = base_slug
             counter = 1
             while Blog.objects.filter(slug=slug).exclude(pk=self.pk).exists():
