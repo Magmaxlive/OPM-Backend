@@ -17,7 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.exceptions import ValidationError
 
-DOMAIN = "server.oaksproperty.co.nz"
+DOMAIN = ".oaksproperty.co.nz"
 
 
 @api_view(['POST'])
@@ -76,14 +76,16 @@ def logout_view(request):
         key='access_token', 
         path='/',
         secure=True,
-        samesite='Lax'
+        samesite='Lax',
+        domain=DOMAIN
     )
 
     response.delete_cookie(
         key='refresh_token', 
         path='/',
         secure=True,
-        samesite='Lax'
+        samesite='Lax',
+        domain=DOMAIN
     )
     return response
 
